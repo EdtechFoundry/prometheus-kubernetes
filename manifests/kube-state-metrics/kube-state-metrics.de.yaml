@@ -15,45 +15,52 @@ spec:
     spec:
       serviceAccountName: kube-state-metrics
       containers:
-      - name: kube-state-metrics
-        image: k8s.gcr.io/kube-state-metrics:KUBE_STATE_METRICS_VERSION
-        ports:
-        - name: http-metrics
-          containerPort: 8080
-        - name: telemetry
-          containerPort: 8081
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: 8080
-          initialDelaySeconds: 5
-          timeoutSeconds: 5
-      - name: addon-resizer
-        image: k8s.gcr.io/addon-resizer:1.7
-        resources:
-          limits:
-            cpu: 100m
-            memory: 30Mi
-          requests:
-            cpu: 100m
-            memory: 30Mi
-        env:
-          - name: MY_POD_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.name
-          - name: MY_POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-        command:
-          - /pod_nanny
-          - --container=kube-state-metrics
-          - --cpu=100m
-          - --extra-cpu=1m
-          - --memory=200Mi
-          - --extra-memory=2Mi
-          - --threshold=5
-          - --deployment=kube-state-metrics
+        - name: kube-state-metrics
+          image: k8s.gcr.io/kube-state-metrics:KUBE_STATE_METRICS_VERSION
+          ports:
+            - name: http-metrics
+              containerPort: 8080
+            - name: telemetry
+              containerPort: 8081
+          resources:
+            limits:
+              cpu: 200m
+              memory: 300Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+        - name: addon-resizer
+          image: k8s.gcr.io/addon-resizer:1.7
+          resources:
+            limits:
+              cpu: 100m
+              memory: 30Mi
+            requests:
+              cpu: 100m
+              memory: 30Mi
+          env:
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          command:
+            - /pod_nanny
+            - --container=kube-state-metrics
+            - --cpu=100m
+            - --extra-cpu=1m
+            - --memory=200Mi
+            - --extra-memory=2Mi
+            - --threshold=5
+            - --deployment=kube-state-metrics
       nodeSelector:
         node_label_key: node_label_value

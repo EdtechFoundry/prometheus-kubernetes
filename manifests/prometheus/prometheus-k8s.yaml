@@ -27,7 +27,7 @@ spec:
       role: alert-rules
       prometheus: k8s
   nodeSelector:
-    node_label_key: monitoring
+    node_label_key: node_label_value
   resources:
     requests:
       memory: PROMETHEUS_MEMORY_REQUEST

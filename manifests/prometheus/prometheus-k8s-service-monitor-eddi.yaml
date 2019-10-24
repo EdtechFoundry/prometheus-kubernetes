@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: eddi
+  labels:
+    k8s-app: eddi
+spec:
+  jobLabel: eddi
+  selector:
+    matchLabels:
+      app: eddi
+  namespaceSelector:
+    matchNames:
+      - kube-system
+      - monitoring
+      - default
+  endpoints:
+    - path: /monitoring/prometheus
+      port: "80"
+      interval: 30s

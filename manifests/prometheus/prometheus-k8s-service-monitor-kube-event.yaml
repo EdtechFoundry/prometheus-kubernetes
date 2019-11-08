@@ -1,21 +1,19 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: eddi
+  name: kube-event-exporter
   labels:
-    k8s-app: eddi
+    k8s-app: kube-event-exporter
 spec:
-  jobLabel: eddi
+  jobLabel: kube-event-exporter
   selector:
     matchLabels:
-      app: eddi
+      kube-event-exporter: ".*"
   namespaceSelector:
     matchNames:
       - kube-system
       - monitoring
       - default
   endpoints:
-    - path: /monitoring/prometheus
-      port: http
-      interval: 30s
-      honorLabels: true
+    - port: kube-event-exporter
+      interval: 5s

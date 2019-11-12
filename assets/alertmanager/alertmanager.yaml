@@ -1,6 +1,6 @@
 global:
   resolve_timeout: 5m
-  slack_api_url: "https://hooks.slack.com/services/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"
+  slack_api_url: "<hidden. Get this from the Prometheus webhook on Slack>"
   smtp_smarthost: "your_smtp_smarthost:587"
   smtp_from: "your_smtp_from"
   smtp_auth_username: "your_smtp_user"
